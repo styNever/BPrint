@@ -1,0 +1,1800 @@
+# BPrint开发文档
+
+## 简介	
+
+​		BPrint 为Browser Print(浏览器打印) 简写，目前市面的浏览器打印都是只提供了简单的print()方法，特别的是没有对打印进行数据分页处理，而且也没布局的开发需要花费挺大的开发时间，BPrint为了解决当前问题，对于浏览器打印进行了封装，有助于提高开发人员的开发效率，甚至可以连接数据库让不懂开发的人实现动态生成打印模板实现打印。
+
+## 开始使用
+
+### 初始化
+
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BPrint使用介绍</title>
+    <link rel="stylesheet" type="text/css" href="./bprint.css">
+    <script type="text/javascript" src="./jquery-3.2.1.min.js"></script> 
+    <script type="text/javascript" src="./bprint.js"></script>
+</head>
+<body>
+    <div class="container">
+        <iframe id="printFrame" hidden="hidden"></iframe>    
+        <script type="text/javascript">            
+            var bprint=PrintHtml();
+            bprint.print();
+        </script>    
+    </div>
+</body>
+</html>
+```
+
+
+BPrint框架依赖Jquery，因此需要引入jquery-3.2.1.js或以上版本，此外需要加载本框架本身的bprint.js
+
+
+
+### 配置参数
+
+
+
+##### 配置数据源
+
+前台数据源配置：
+
+```js
+var dataSource={
+            maps:true,//暂时未用到
+            tableAttr:' border="1" style="width: 100%;" border-color="#333" cellpadding="1" cellspacing="0"',//配置table的样式
+            colums:[   //配置每个单元格的数据，可以未单元格设置相应的样式
+                    /*第一行*/
+                    [
+                         {
+                            filed:'',
+                            style:'',
+                            class:'sm-title blod',
+                            width:'10%',
+                            value:'工单编号',
+                        },  
+                        {
+                            filed:'workOrderNum',
+                            style:'',
+                            class:'sm-title',
+                            width:'10%',
+                            value:'100000000271',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'sm-title blod',
+                            width:'10%',
+                            value:'印品代码',                          
+                         }, 
+                         {
+                            filed:'printCode',
+                            style:'',
+                            class:'sm-title',
+                            width:'10%',
+                            value:'100000000023',                            
+                         },  
+                          {
+                            filed:'',
+                            style:'',
+                            class:'sm-title blod',
+                            width:'10%',
+                            value:'印品名称',                            
+                         },  
+                          {
+                            filed:'printName',
+                            style:'',
+                            class:'sm-title',
+                            width:'14%',
+                            value:'300g787*670mm单粉.晨鸣',                    
+                         },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'sm-title blod',
+                            width:'9%',
+                            value:'工单类别',                    
+                         },  
+                         {
+                            filed:'orderType',
+                            style:'',
+                            class:'sm-title',
+                            width:'9%',
+                            value:'正常订单',                    
+                         },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'sm-title blod',
+                            width:'9%',
+                            value:'开单日期',                    
+                         },  
+                         {
+                            filed:'orderDate',
+                            style:'',
+                            class:'sm-title',
+                            width:'9%',
+                            value:'2018-09-25',                    
+                         },  
+                    ],
+
+                   /*第二行*/
+                    [
+                       {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'开料尺寸',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'SOP文件编号',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         },
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'品检标准编号',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'彩印工单号',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'联数',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         },   
+                           
+                    ],
+                   /*第三行*/
+                    [
+                       {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'主工单编号',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'成品代码',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         },
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'成品名称',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'产品类别',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'交货日期',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'2018-09-28',                            
+                         },   
+                           
+                    ],
+                    /*第四行*/
+                    [
+                       {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'销售订单',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'10000265',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'成品规格',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'',                            
+                         },
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'客户名称',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            colspan:'3',
+                            value:'中华',                            
+                         }, 
+                         {
+                            filed:'',
+                            style:'',
+                            class:'blod',
+                            width:'',
+                            value:'交货数量',
+                        },  
+                         {
+                            filed:'',
+                            style:'',
+                            class:'',
+                            width:'',
+                            value:'20001',                            
+                         },                                
+                           
+                    ] ,
+                    [
+                        {
+                            colspan:'10',
+                            value:'',
+                        }
+                    ]
+
+            ]                       
+        };
+    	//渲染表格。每次load都会创建新的table。如果数据源比较复杂可以多次load来拼成界面
+        print.load({
+            dataSource:dataSource
+        });
+		 //打印页面
+		 print.print();			
+    
+```
+##### 打印配置
+
+​		
+
+```js
+	var config={
+		'width': '1510px',//打印宽度
+	    'heigth':'100%',//打印高度
+	    'rowsHeight':'20',//每行多少像素
+	    'containerWidth':'1000px',
+	    'style':'',//自定义位于header标签的的样式
+	    'title':'打印标题',//打印标题
+	    'dataSource':{},//打印数据源
+	    'printStr':'',//如果不用表格。可以自己画样式，然后将字符串传入，暂时未启用
+	    'styleFile':'',//自定义样式文件，暂时未启用
+	    'logoUrl':'',//	logo路径
+	    'headLeft':'',//设置头左边样式。
+	    'headRight':'',//设置头右边样式
+	    'lineBreak':'18',//多少行进行换行，
+        'url':'',//后台直接返回config用于设置界面的参数。可以配合数据库实现动态生成。已测试可以实现
+        }
+```
+
+
+
+参考demo
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BPrint使用介绍</title>
+    <!-- <link rel="stylesheet" type="text/css" href="./print.css"> -->
+    <script type="text/javascript" src="./jquery-3.2.1.min.js"></script> 
+    <script type="text/javascript" src="./bprint.js"></script>
+</head>
+<body>
+    <div class="container">
+    <iframe id="printFrame" hidden="hidden"></iframe>
+    <script type="text/javascript">
+            
+        var print=PrintHtml();
+    
+        print.load({
+            dataSource:{
+                maps:true,
+                tableAttr:' border="1" style="width: 100%;" border-color="#333" cellpadding="1" cellspacing="0"',
+                colums:[   
+                        /*第一行*/
+                        [
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'10%',
+                                value:'工单编号',
+                            },  
+                            {
+                                filed:'workOrderNum',
+                                style:'',
+                                class:'sm-title',
+                                width:'10%',
+                                value:'100000000271',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'10%',
+                                value:'印品代码',                          
+                             }, 
+                             {
+                                filed:'printCode',
+                                style:'',
+                                class:'sm-title',
+                                width:'10%',
+                                value:'100000000023',                            
+                             },  
+                              {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'10%',
+                                value:'印品名称',                            
+                             },  
+                              {
+                                filed:'printName',
+                                style:'',
+                                class:'sm-title',
+                                width:'14%',
+                                value:'300g787*670mm单粉.晨鸣',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'工单类别',                    
+                             },  
+                             {
+                                filed:'orderType',
+                                style:'',
+                                class:'sm-title',
+                                width:'9%',
+                                value:'正常订单',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'开单日期',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title',
+                                width:'9%',
+                                value:'2018-09-25',                    
+                             },  
+                        ],
+    
+                       /*第二行*/
+                        [
+                           {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'开料尺寸',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'SOP文件编号',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             },
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'品检标准编号',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'彩印工单号',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'联数',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             },   
+                               
+                        ],
+                       /*第三行*/
+                        [
+                           {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'主工单编号',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'成品代码',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             },
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'成品名称',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'产品类别',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'交货日期',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'2018-09-28',                            
+                             },   
+                               
+                        ],
+                        /*第四行*/
+                        [
+                           {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'销售订单',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'10000265',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'成品规格',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'',                            
+                             },
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'客户名称',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                colspan:'3',
+                                value:'中华',                            
+                             }, 
+                             {
+                                filed:'',
+                                style:'',
+                                class:'blod',
+                                width:'',
+                                value:'交货数量',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'',
+                                width:'',
+                                value:'20001',                            
+                             },                                
+                               
+                        ] ,
+                        [
+                            {
+                                colspan:'10',
+                                value:'',
+                            }
+                        ]
+    
+                ]                       
+            },
+        });
+      
+        print.load({
+            dataSource:{
+                maps:true,
+                tableAttr:' border="1" style="width: 100%;" border-color="#333" cellpadding="1" cellspacing="0"',
+                colums:[   
+                        /*第一行*/
+                        [
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'序号',
+                            },  
+                            {
+                                filed:'workOrderNum',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'类别',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'物料代码',                          
+                             }, 
+                             {
+                                filed:'printCode',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'13%',
+                                value:'物料名称',                            
+                             },  
+                              {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'大料尺寸',                            
+                             },  
+                              {
+                                filed:'printName',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'开料尺寸',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'投料大张',                    
+                             },  
+                             {
+                                filed:'orderType',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'5%',
+                                value:'开数',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'实际用量',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'单位',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'变动损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'固定损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'备注',                    
+                             },   
+                        ],
+                          
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                         [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+    
+                ]                       
+            },
+        });
+        
+        print.load({
+            dataSource:{
+                maps:true,
+                tableAttr:' border="1" style="width: 100%;" border-color="#333" cellpadding="1" cellspacing="0"',
+                colums:[   
+                        /*第一行*/
+                        [
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'序号',
+                            },  
+                            {
+                                filed:'workOrderNum',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'类别',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'物料代码',                          
+                             }, 
+                             {
+                                filed:'printCode',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'13%',
+                                value:'物料名称',                            
+                             },  
+                              {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'大料尺寸',                            
+                             },  
+                              {
+                                filed:'printName',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'开料尺寸',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'投料大张',                    
+                             },  
+                             {
+                                filed:'orderType',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'5%',
+                                value:'开数',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'实际用量',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'单位',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'变动损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'固定损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'备注',                    
+                             },   
+                        ],
+                          
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                         [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+    
+                ]                       
+            },
+        });
+    
+        print.load({
+            dataSource:{
+                maps:true,
+                tableAttr:' border="1" style="width: 100%;" border-color="#333" cellpadding="1" cellspacing="0"',
+                colums:[   
+                        /*第一行*/
+                        [
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'序号',
+                            },  
+                            {
+                                filed:'workOrderNum',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'类别',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'物料代码',                          
+                             }, 
+                             {
+                                filed:'printCode',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'13%',
+                                value:'物料名称',                            
+                             },  
+                              {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'大料尺寸',                            
+                             },  
+                              {
+                                filed:'printName',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'开料尺寸',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'投料大张',                    
+                             },  
+                             {
+                                filed:'orderType',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'5%',
+                                value:'开数',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'实际用量',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'单位',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'变动损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'固定损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'备注',                    
+                             },   
+                        ],
+                          
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                         [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+    
+                ]                       
+            },
+        });
+    
+        print.load({
+            dataSource:{
+                maps:true,
+                tableAttr:' border="1" style="width: 100%;" border-color="#333" cellpadding="1" cellspacing="0"',
+                colums:[   
+                        /*第一行*/
+                        [
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'序号',
+                            },  
+                            {
+                                filed:'workOrderNum',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'类别',
+                            },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'9%',
+                                value:'物料代码',                          
+                             }, 
+                             {
+                                filed:'printCode',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'13%',
+                                value:'物料名称',                            
+                             },  
+                              {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'大料尺寸',                            
+                             },  
+                              {
+                                filed:'printName',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'7%',
+                                value:'开料尺寸',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'投料大张',                    
+                             },  
+                             {
+                                filed:'orderType',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'5%',
+                                value:'开数',                    
+                             },  
+                             {
+                                filed:'',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'实际用量',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'单位',                    
+                             },  
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'变动损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'6%',
+                                value:'固定损',                    
+                             },   
+                             {
+                                filed:'orderDate',
+                                style:'',
+                                class:'sm-title blod',
+                                width:'8%',
+                                value:'备注',                    
+                             },   
+                        ],
+                          
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                         [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+                          [
+                             {
+                                value:'10',
+                            },  
+                            {
+                                value:'',
+                            },  
+                             {
+                                value:'100000000024',                          
+                             }, 
+                             {
+                                value:'国产普通打包牛皮纸',                            
+                             },  
+                              {
+                                value:'',                            
+                             },  
+                              {
+                                value:'',                    
+                             }, 
+                             {
+                                value:'',                    
+                             },   
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'206011',                    
+                             },  
+                             {
+                                value:'',                    
+                             },  
+                             {
+                                value:'618033',                    
+                             },  
+                             {
+                                value:'4',                    
+                             },   
+                             {
+                                value:'asdfasdfasdf0030',                    
+                             },   
+                        
+                        ],
+    
+                ]                       
+            },
+        });    
+        print.print();
+    </script>    
+    </div>
+    </body>
+</html>
+```
+
+效果图
+
+
+
+![](C:\Users\L.X.S\Pictures\IQIYISnapShot\20200506_165800[00-00-00--00-00-30].gif)
+
+
+

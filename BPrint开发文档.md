@@ -1793,8 +1793,7 @@ var dataSource={
 效果图
 
 
-
-![](C:\Users\L.X.S\Pictures\IQIYISnapShot\20200506_165800[00-00-00--00-00-30].gif)
+![image](https://github.com/styNever/BPrint/blob/master/demo_img/demo.gif)
 
 
 
